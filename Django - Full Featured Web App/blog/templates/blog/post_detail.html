@@ -1,0 +1,53 @@
+<!-- Include the base template -->
+{% extends "blog/base.html" %}
+
+<!-- Insert content inside the block in "base.html" -->
+{% block content %}
+
+    <!-- 
+        NOTE: By default the template expects that the object that will be "detailed" 
+        will be passed as "object". Change the view on "views.py" to change this
+    -->
+
+    <article class="media content-section">
+
+        <!-- Access the:
+            - Current post
+            - The author of the current post
+            - The profile associated with the author
+            - Image stored on the current profile
+            - URL of the image
+        -->
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}" alt="">
+
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ object.author }}</a>
+                
+                <!-- Date is formatted to only show the date itself and not the time  -->
+                <!-- Filter (|): Used to format the time in a specific way -->
+                <!-- Date format: Month Day, Year   
+                    - F: Full textual month
+                    - d: Day number
+                    - Y: Year in number format
+                -->
+                <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+
+                <!-- If the current logged in user is the author of the post, display -->
+                <!-- the "edit" and "delete" controls for the post -->
+                {% if object.author == user %}
+
+                    <!-- Wrap in a div to get the buttons into a new line -->
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Edit</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+                    </div>
+                {% endif %}
+
+            </div>
+            <h2 class="article-title">{{ object.title }}</h2>
+            <p class="article-content">{{ object.content }}</p>
+        </div>
+        </article>
+
+{% endblock content %}

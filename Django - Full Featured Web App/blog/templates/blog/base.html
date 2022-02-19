@@ -35,7 +35,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
-                    <div class="navbar-nav ml-auto">
+                    <div class="navbar-nav mr-auto">
 
                         <!-- The HREF will point to the name of the route on our URL patterns -->
                         <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
@@ -47,6 +47,7 @@
 
                         <!-- If the user is logged in -->
                         {% if user.is_authenticated %}
+                            <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
                             <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                         

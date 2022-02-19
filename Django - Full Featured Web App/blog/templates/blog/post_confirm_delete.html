@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+    <!-- 
+        NOTE: The post that will be passed to the template by default will be passed
+        as "object". Make sure to use "object" instead of "post"
+    -->
+
+    <div class="content-section">
+
+        <form method="POST">
+            <!-- Make sure to add a CSRF token to prevent the POST -->
+            <!-- request from being intercepted by an attacker -->
+            {% csrf_token %}
+
+            <!-- Display the entire form -->
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete Post</legend>
+                <h2>Are you sure you want to delete the post "{{ object.title }}"?</h2>
+            </fieldset>
+
+            <!-- Submit button -->
+            <!-- (Elements use bootstrap pre-defined classes) -->
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
+
+                <!-- 
+                    HREF that will redirect back to the post detail. Remember that said
+                    template requires us to pass the id of the post. 
+                -->
+                <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

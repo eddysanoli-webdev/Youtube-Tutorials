@@ -135,6 +135,12 @@ python manage.py createapp appName
 
 - Some people place their "signals" inside their "models", but the documentation recommends that you create a new "signals.py" file to prevent errors from imports.
 
+- Class based views come in different types depending on the purpose of a specific page:
+
+  - List views: List elements. Like the main page of a blog
+  - Update views: Page for updating elements in a page
+  - Detail view: See details of a specific element
+
 ### Files
 
 Django_project
