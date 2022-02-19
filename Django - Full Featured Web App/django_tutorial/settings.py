@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+# Load the dotenv file
+from dotenv import dotenv_values
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -153,3 +156,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Public URL for the media route
 MEDIA_URL = '/media/'
+
+# =====================
+# Email Settings
+
+# Safety tip: To keep the app key away from the source code, it was stored in an
+# environment variable inside a .env file.
+config = dotenv_values("./django_tutorial/.env")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Get user and password by follwing:
+# https://support.google.com/accounts/answer/185833?hl=es
+EMAIL_HOST_USER = config['EMAIL_USER']
+EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
