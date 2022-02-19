@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
     ListView, 
     DetailView, 
@@ -7,6 +7,7 @@ from django.views.generic import (
     DeleteView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 
 # From the "models.py" file on the current directory
 from .models import Post
@@ -17,6 +18,7 @@ from .models import Post
 # Handle the traffic from our home page
 # Return what we want the user to see
 
+# Function View
 def home(request):
 
     # NOTE: "render" still returns an HTTP response under the hood
@@ -43,10 +45,48 @@ class PostListView(ListView):
     #   2. Reverse the order: ['-date_posted']
     ordering = ['-date_posted']
 
+    # Divide the posts into pages, with 2 pages per post
+    # URL to access different pages: localhost:8000/?page=2
+    paginate_by = 5
+
+# =====================
+# USER POST LIST VIEW
+# =====================
+
+class UserPostListView(ListView):
+
+    # Model to query to list the elements
+    model = Post
+
+    # Set a non default template name
+    template_name = 'blog/user_posts.html'
+
+    # By default, the element that the template will loop over is called object_list
+    # Here we want to loop over our Post objects, so we create a new name for "object_list"
+    # element. Since in the "home" template we use "posts" that will be the name
+    context_object_name = 'posts'
+
+    # Divide the posts into pages, with 2 pages per post
+    # URL to access different pages: localhost:8000/?page=2
+    paginate_by = 5
+
+    # Filter the model results
+    def get_queryset(self):
+
+        # Check if the requested user exists
+        #   - Filter the User model
+        #   - The users username must be equal to the username parameter passed through the URL
+        #   - If no results are found, return a 404 error
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+
+        # The ordering of the posts must be made on the query
+        return Post.objects.filter(author = user).order_by('-date_posted')
+
+
 # =====================
 # ABOUT PAGE
 # =====================
-
+ 
 def about(request): 
     return render(request, 'blog/about.html', context = {
         'title': "About"

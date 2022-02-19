@@ -7,7 +7,8 @@ from .views import (
     PostDetailView, 
     PostCreateView, 
     PostUpdateView, 
-    PostDeleteView
+    PostDeleteView,
+    UserPostListView
 )
 
 # TIPS: 
@@ -37,6 +38,9 @@ urlpatterns = [
 
     # Delete Post View
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+
+    # Filter Posts by User
+    path('user/<str:username>/', UserPostListView.as_view(), name='user-posts'),
 
     # About view
     path('about/', views.about, name="blog-about"),

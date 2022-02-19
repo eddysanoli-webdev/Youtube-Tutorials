@@ -141,6 +141,45 @@ python manage.py createapp appName
   - Update views: Page for updating elements in a page
   - Detail view: See details of a specific element
 
+- Pagination commands:
+
+    ```python
+
+    # Import the paginator (to subdivide into pages)
+    from django.core.paginator import Paginator
+
+    # List of sample posts
+    posts = ["1", "2", "3", "4", "5"]
+
+    # Paginate posts into groups of two elements
+    p = Paginator(posts, 2)
+
+    # Total number of pages in paginator
+    p.num_pages
+
+    # Iterate through every page
+    for page in p.page_range:
+        print(page)
+
+    # Access first page
+    p1 = p.page(1)
+
+    # Get page number as an int
+    p1.number
+
+    # List elements of the first page
+    p1.object_list
+
+    # Check if page 1 has a previous page
+    p1.has_previous()
+
+    # Check if page 1 has a next page
+    p1.next_page_number()
+
+    # Get next page number for page 1
+    p1.next_page_number()
+    ```
+
 ### Files
 
 Django_project

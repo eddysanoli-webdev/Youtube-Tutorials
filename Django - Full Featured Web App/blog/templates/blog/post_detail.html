@@ -22,7 +22,10 @@
 
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ object.author }}</a>
+
+                <!-- Link to a page with all the posts of a user -->
+                    <!-- "user-posts" requires the username as a parameter -->
+                    <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
                 
                 <!-- Date is formatted to only show the date itself and not the time  -->
                 <!-- Filter (|): Used to format the time in a specific way -->

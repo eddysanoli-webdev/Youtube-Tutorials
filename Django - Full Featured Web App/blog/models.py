@@ -23,7 +23,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default = timezone.now)
 
     # One to many relationship (One user can have multiple posts)
-    # NOTE: on_delete = models.CASCATE == Delete all the posts of a user if the user is deleted
+    # NOTE: on_delete = models.CASCADE == Delete all the posts of a user if the user is deleted
     author = models.ForeignKey(User, on_delete = models.CASCADE)
 
     # Dunder function (double under)

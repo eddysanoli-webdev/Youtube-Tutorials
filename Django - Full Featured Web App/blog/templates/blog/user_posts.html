@@ -3,6 +3,10 @@
 
 <!-- Insert content inside the block in "base.html" -->
 {% block content %}
+    
+    <!-- "view.kwargs.username": Get "username" parameter passed into the URL -->
+    <!-- "page_obj.paginator.count": Total number of posts subdivided by the paginator -->
+    <h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
 
     {% for post in posts %} 
         <article class="media content-section">
@@ -18,9 +22,6 @@
 
             <div class="media-body">
                 <div class="article-metadata">
-
-                    <!-- Link to a page with all the posts of a user -->
-                    <!-- "user-posts" requires the username as a parameter -->
                     <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
                     
                     <!-- Date is formatted to only show the date itself and not the time  -->
@@ -68,7 +69,7 @@
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                 <a href="?page={{ num }}" class="btn btn-outline-info mb-4">{{ num }}</a>
             {% endif %}
-
+            
         {% endfor %}
 
         <!-- Next Pages -->
