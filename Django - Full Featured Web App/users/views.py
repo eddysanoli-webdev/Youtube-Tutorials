@@ -69,9 +69,38 @@ def register(request):
 @login_required
 def profile(request):
 
-    # Get the update form for both the profile and the user
-    user_update_form = UserUpdateForm()
-    profile_update_form = ProfileUpdateForm()
+
+    if request.method == 'POST':
+
+        # If a post request is received, validate the POST info, also, fill unchanged
+        # parameters with the default user data.
+        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_update_form = ProfileUpdateForm(
+            request.POST,
+            request.FILES,  
+            instance=request.user.profile)
+
+        # If the data in both forms is correct, save it
+        if user_update_form.is_valid() and profile_update_form.is_valid():
+
+            # Save data
+            user_update_form.save()
+            profile_update_form.save()
+
+             # Create success message
+            messages.success(request, f'Profile info updated successfully!')
+            
+            # Redirect back to the profile page
+            return redirect('profile')
+
+    else:
+
+        # Get the update form for both the profile and the user
+        # (These are model forms, so you can populate the fields of the forms by passing them
+        # an object or an instance of the model that it expects. In other words: Pass a user
+        # object to the UserUpdateForm )
+        user_update_form = UserUpdateForm(instance=request.user)
+        profile_update_form = ProfileUpdateForm(instance=request.user.profile)
 
     return render(request, 'users/profile.html', context = {
         'u_form': user_update_form,
