@@ -1,0 +1,44 @@
+<!-- We can extend templates from another app -->
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    
+    <!-- Profile Info -->
+    <div class="content-section">
+
+        <div class="media">
+            <img src="{{ user.profile.image.url }}" alt="User Profile" class="rounded-circle account-img">
+            <div class="media-body">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <p class="text-secondary">{{ user.email }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Update Forms -->
+    <!--    - enctype: Used to correctly save the images -->
+    <form method="POST" enctype="multipart/form-data">
+        
+        <!-- Make sure to add a CSRF token to prevent the POST -->
+        <!-- request from being intercepted by an attacker -->
+        {% csrf_token %}
+
+        <!-- Display the entire form -->
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            
+            <!-- Use the vertical bar to set a filter -->
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+
+        <!-- Submit button -->
+        <!-- (Elements use bootstrap pre-defined classes) -->
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+
+{% endblock content %}
