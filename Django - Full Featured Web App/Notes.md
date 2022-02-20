@@ -198,6 +198,9 @@ python manage.py createapp appName
 3. Create a `requirements.txt` file. NOTE: If "pipenv" was used, `requirements.txt` is not required.
 4. Initialize git repo: `git init`
 5. Add all of the changes that we have so far: `git add -A`
+6. Create a Heroku project: `heroku create APPNAME`
+7. Open your new project: `heroku open -a APPNAME`
+
 
 ### Files
 
