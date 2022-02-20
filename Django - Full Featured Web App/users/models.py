@@ -19,11 +19,15 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+    # Temporarily removed the resizing functionality
+
+    """
     # Overwrite default save method from parent class
-    def save(self):
+    def save(self, *args, **kwargs):
 
         # Execute the "save" method of the parent class
-        super().save()
+        # (NOTE: Make sure to add the arguments and keyword arguments that the user is started)
+        super().save(*args, **kwargs)
 
         # Open image of the current instance
         img = Image.open(self.image.path)
@@ -35,4 +39,5 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
+    """
 

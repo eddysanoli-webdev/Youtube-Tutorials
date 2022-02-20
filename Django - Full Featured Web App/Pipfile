@@ -8,6 +8,9 @@ django = "*"
 django-crispy-forms = "*"
 pillow = "*"
 python-dotenv = "*"
+boto3 = "*"
+django-storages = "*"
+gunicorn = "*"
 
 [dev-packages]
 

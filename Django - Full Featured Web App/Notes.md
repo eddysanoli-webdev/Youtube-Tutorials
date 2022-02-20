@@ -180,6 +180,25 @@ python manage.py createapp appName
     p1.next_page_number()
     ```
 
+- Install boto3 to use the AWS SDK on python. To integrate S3 into django, also install django-storages and add the installed app "storages" into the INSTALLED_APPS list inside `settings.py`.
+
+### Server Commands
+
+- `hostnamectl set-hostname USER`: Set the host name on server
+- `hostname`: Check the hostname on the machine
+- `nano /etc/hosts`: Edit the hosts file
+- `adduser USER`: Add new limited user (different from root)
+- `add USER sudo`: Allow the new user to use sudo commands (After this make sure to login as your new user by re-entering the terminal).
+- `ssh USER@IP`: SSH into the server or virtual
+
+### Heroku Steps
+
+1. Create an account and install the Heroku CLI
+2. Login to heroku: `heroku login`
+3. Create a `requirements.txt` file. NOTE: If "pipenv" was used, `requirements.txt` is not required.
+4. Initialize git repo: `git init`
+5. Add all of the changes that we have so far: `git add -A`
+
 ### Files
 
 Django_project

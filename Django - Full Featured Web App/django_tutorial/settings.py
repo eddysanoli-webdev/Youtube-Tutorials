@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -173,3 +174,28 @@ EMAIL_USE_TLS = True
 # https://support.google.com/accounts/answer/185833?hl=es
 EMAIL_HOST_USER = config['EMAIL_USER']
 EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
+
+# =====================
+# AWS Config
+
+# Key ID and secret for AWS
+AWS_ACCESS_KEY_ID = config["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = config["AWS_SECRET_ACCESS_KEY"]
+
+# Settings to prevent the "Please use AWS4-HMAC-SHA256" error
+# See: https://github.com/jschneier/django-storages/issues/782
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_ADDRESSING_STYLE = "virtual"
+
+# Number of the bucket where the files will be stored
+AWS_STORAGE_BUCKET_NAME = config["AWS_STORAGE_BUCKET_NAME"]
+
+# Prevent a file from being overwritten if two files have the same name
+# In the case that a conflict is found, the repeated file will be renamed
+AWS_S3_FILE_OVERWRITE = False
+
+# Used to prevent issues on previous versions of django-storage
+AWS_DEFAULT_ACL = None
+
+# Change this to use S3 storage
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
