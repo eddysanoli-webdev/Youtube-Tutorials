@@ -10,11 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+
+from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
 import os
+import django_heroku
 
-# Load the dotenv file
-from dotenv import dotenv_values
+# Try to load the dotenv file into the systems environment variable
+try: 
+    load_dotenv(find_dotenv())
+except Exception as e:
+    print("No dotenv file found")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,12 +30,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-==e-yg7667sqo2r7l*-x1$goij0k=5hu)9($0x+c8baa1yp7lw'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ.get("DJANGO_DEBUG_VALUE") == "True")
 
-ALLOWED_HOSTS = []
+# =====================
+# Allow Hosts:
+#   - localhost: 127.0.0.1
+#   - heroku: cshafer-django-tutorial.herokuapp.com
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'cshafer-django-tutorial.herokuapp.com'
+]
 
 
 # Application definition
@@ -123,6 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# IMPORTANT: Set the STATIC ROOT to allow the app to be deployed on heroku
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -161,9 +177,9 @@ MEDIA_URL = '/media/'
 # =====================
 # Email Settings
 
-# Safety tip: To keep the app key away from the source code, it was stored in an
-# environment variable inside a .env file.
-config = dotenv_values("./django_tutorial/.env")
+# Safety tip: To keep the "app key" away from the source code, it was stored in an
+# environment variable inside a .env file. During deployment, that variable will consist
+# of an environment variable from the machine.
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -172,15 +188,15 @@ EMAIL_USE_TLS = True
 
 # Get user and password by follwing:
 # https://support.google.com/accounts/answer/185833?hl=es
-EMAIL_HOST_USER = config['EMAIL_USER']
-EMAIL_HOST_PASSWORD = config['EMAIL_PASS']
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER') 
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS') 
 
 # =====================
 # AWS Config
 
 # Key ID and secret for AWS
-AWS_ACCESS_KEY_ID = config["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = config["AWS_SECRET_ACCESS_KEY"]
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID") 
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY") 
 
 # Settings to prevent the "Please use AWS4-HMAC-SHA256" error
 # See: https://github.com/jschneier/django-storages/issues/782
@@ -188,7 +204,7 @@ AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_ADDRESSING_STYLE = "virtual"
 
 # Number of the bucket where the files will be stored
-AWS_STORAGE_BUCKET_NAME = config["AWS_STORAGE_BUCKET_NAME"]
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME") 
 
 # Prevent a file from being overwritten if two files have the same name
 # In the case that a conflict is found, the repeated file will be renamed
@@ -199,3 +215,9 @@ AWS_DEFAULT_ACL = None
 
 # Change this to use S3 storage
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# =====================
+# Heroku Settings
+
+# Setup various things to work when deploying onto heroku
+django_heroku.settings(locals())

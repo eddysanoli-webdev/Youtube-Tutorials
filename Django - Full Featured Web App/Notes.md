@@ -195,16 +195,33 @@ python manage.py createapp appName
 
 1. Create an account and install the Heroku CLI
 2. Login to heroku: `heroku login`
-3. Create a `requirements.txt` file. NOTE: If "pipenv" was used, `requirements.txt` is not required.
-4. Initialize git repo: `git init`
-5. Add all of the changes that we have so far: `git add -A`
-6. Create a Heroku project: `heroku create APPNAME`
-7. Open your new project: `heroku open -a APPNAME`
-
+3. Create a `requirements.txt` file (NOTE: If "pipenv" was used, `requirements.txt` is not required)
+4. Initialize git repo inside the project folder where the pipfiles are located: `git init`
+5. Create a Heroku project: `heroku create APPNAME`
+6. Open your new project: `heroku open -a APPNAME`
+7. Add the heroku remote: `heroku git:remote -a APPNAME`
+8. Add a Procfile with the following line: `web: gunicorn django_tutorial.wsgi`
+9. Generate a new secret key for production using the "secrets" package inside the python shell: `secrets.token_hex(24)`. Copy the key into the .env file, and import it inside the
+`settings.py` file as the new value of `SECRET_KEY`.
+10. (Optional) Set the `DEBUG_VALUE` as an environment variable equal to "True". This way
+the debug mode will be used during development, while disabling it during the deployment
+(By setting the same environment variable on Heroku to false).
+11. Set the enviroment variables inside Heroku: `heroku config:set VARIABLE_NAME=value`
+12. Add a postgres database for production: `heroku addons:create heroku-postgresql:hobby-dev`
+13. Install the package "django-heroku": `pipenv install django-heroku`
+14. (Optional) Install "setuptools" if the error "No module named 'pkg_resources.extern.jaraco'" pops up: `pipenv install setuptools`.
+15. Add all of the changes that we have so far: `git add -A`
+16. Commit the changes: `git commit -m "First commit"`
+17. Push changes onto the repo: `git push heroku master` (If a repo already existed on the project use: `git push heroku main:main`)
+18. Migrate the database to the postgresql database on heroku (Execute the command to "migrate" inside the heroku instance): `heroku run python manage.py migrate`
+19. Open a bash shell inside the heroku instance: `heroku run bash`
+20. Create a superuser for the admin panel: `python manage.py createsuperuser`
+21. Set the "DEBUG" environment variable to false: `heroku config:set DJANGO_DEBUG_VALUE="False"`
+22. Open the app: `heroku open`
 
 ### Files
 
-Django_project
+#### Django_project
 
 - __init__.py: Tells python that the current folder is a package
 - settings.py: Configurations and settings
@@ -212,8 +229,8 @@ Django_project
 - manage.py: Allows us to run command lines inside the server
 - wsgi.py: How the python webapp and the server communicate
 
-App
+#### App
 
 - __init__.py: Tells python that the current folder is a package
 - views.py: Routes for the website. This is the file that manages which HTML document is being rendered.
-- forms.py: Modifications to the standard forms that django gives the programmer
+- forms.py: Modifications to the standard forms that django gives the programmer.
