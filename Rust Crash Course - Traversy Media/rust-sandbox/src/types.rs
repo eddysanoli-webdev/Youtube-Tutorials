@@ -28,5 +28,19 @@ pub fn run() {
     // Find max size
     // (Here we use the standard library)
     println!("Max i32: {}", std::i32::MAX);
-    println!("Max f64: {}", std::f64::MAX);
+    println!("Max f64: {}", std::i64::MAX);
+
+    // Declaring a boolean
+    let is_active: bool = true;
+
+    // Get boolean from expression
+    let is_greater: bool = 10 > 5;
+
+    // Chars: Both letters and emojis are valid
+    let a1 = 'a';
+    let face = '\u{1F600}';
+
+    // Print all our variables
+    println!("{:?}", (x, y, z, is_active, is_greater, a1, face));
+
 }
